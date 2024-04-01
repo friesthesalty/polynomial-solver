@@ -53,7 +53,7 @@ def finding_zero(p, q, power, coefficients:list):
 # main
 def poly(*args):
   """
-  Find roots of any polynomial if there are less than 3 irrational roots.
+  Find roots of any polynomial if they are rational.
 
   Does not have type check.
   """
@@ -97,7 +97,9 @@ def poly(*args):
     quo = finding_zero(p, q, power, coefficients)
     if quo == None:
       return "No rational roots."
-    roots.append(quo)
+    if quo not in roots: # sometimes you'll get the duplicate in the synthetic division rather then during the quadratic
+      # quadratic formula already checks for this though because of the discriminant
+      roots.append(quo)
     
 
     for inx, val in enumerate(coefficients):
@@ -118,15 +120,21 @@ def poly(*args):
   # find last two roots using quadratic
   # print(coefficients)
   last = quad(coefficients[0], coefficients[1], coefficients[2])
-  roots.append(last[0])
-  roots.append(last[1])
+  if type(last) == list:
+    roots.append(last[0])
+    roots.append(last[1])
+  else:
+    roots.append(last)
   return roots
   
-  
+# test cases
 print(poly(6,2))
 print(poly(1, 9, -35, -405, -866, -504))
 print(poly(1, -1, -42, -104, -64, 0))
 print(poly(6, 0, 0))
+print(poly(1, 9, 29, 39, 18))
+print(poly(1, 7, 17, 17, 6))
+print(poly(4, 12, 9))
 
 
 
